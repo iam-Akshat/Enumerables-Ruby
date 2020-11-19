@@ -12,5 +12,13 @@ module Enumerable
             index += 1
         end
         self    
-    end        
-  end
+    end
+    def my_select
+        new_array = []
+        self.my_each do |item|
+            new_array.push(item) if yield(item)
+          end
+        end
+      new_array
+    end
+end
