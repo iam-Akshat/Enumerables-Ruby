@@ -54,4 +54,28 @@ module Enumerable
         end
         false       
     end
+    def my_none? (pattern = nil)
+      if ! block_given? && pattern.nil?
+        my_each { |item| return true if item}
+        return false
+      end
+      if !block_given? && !pattern.nil?
+
+        if pattern.is_a? (Class)
+          my_each { |item| return false if item.class == pattern}
+          return true
+        end
+        if pattern.class == Regexp
+          my_each { |item| return false if pattern.match(item)}
+          return true
+        end
+
+        my_each { |item| return false if item == pattern }
+        return true
+      end
+      my_any? { |item| return false if yield(item)}
+      true
+  end
 end
+
+ puts [].none?   
