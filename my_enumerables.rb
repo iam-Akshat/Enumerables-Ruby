@@ -17,8 +17,8 @@ module Enumerable
         new_array = []
         self.my_each do |item|
             new_array.push(item) if yield(item)
-          end
+
         end
       new_array
     end
-end
+  end
