@@ -4,7 +4,7 @@ module Enumerable
             yield(item)
           end
           self
-        end
+    end
     def my_each_with_index
         index=0;
         for item in self
@@ -21,4 +21,21 @@ module Enumerable
         end
       new_array
     end
-  end
+
+    def my_all?(pattern=nil)
+        if block_given?
+            self.my_each do |item|
+                return false if !yield(item)
+            end
+        elsif pattern 
+            self.my_each do |item|
+                return false if !item.is_a?(pattern)
+            end
+        else
+            self.my_each do |item|
+                return false if !item
+            end    
+        end
+        true       
+    end
+end
