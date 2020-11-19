@@ -76,6 +76,10 @@ module Enumerable
       my_any? { |item| return false if yield(item)}
       true
   end
+  def my_count (num = nil)
+    arr = self.class == Array ? self : to_a
+    return arr.length unless block_given? || num
+    return arr.my_select { |item| item == num }.length if num
+    arr.my_select { |item| yield(item)}.length
+  end
 end
-
- puts [].none?   
