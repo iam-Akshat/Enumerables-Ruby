@@ -38,4 +38,20 @@ module Enumerable
         end
         true       
     end
+    def my_any?(pattern=nil)
+        if block_given?
+            self.my_each do |item|
+                return true if yield(item)
+            end
+        elsif pattern 
+            self.my_each do |item|
+                return true if item.is_a?(pattern)
+            end
+        else
+            self.my_each do |item|
+                return true if item
+            end    
+        end
+        false       
+    end
 end
