@@ -94,4 +94,34 @@ module Enumerable
     newObj.length==0 and return self.to_enum(:map)
     newObj
   end
+  def my_inject(initial=self[0],sym=nil)
+    if block_given?
+        self.my_each do |obj|
+            initial=yield(initial,obj)
+        end
+    elsif sym
+        case sym.to_s
+        when "*"
+            self.my_each do |obj|
+                initial*=obj
+            end
+        when "+"
+            self.my_each do |obj|
+                initial+=obj
+            end
+
+        when "-"
+            self.my_each do |obj|
+                initial-=obj
+            end
+        when "/"
+            self.my_each do |obj|
+                initial/=obj
+            end
+        else
+            puts "Invalid symbol"
+        end
+    end
+    initial
+  end
 end
