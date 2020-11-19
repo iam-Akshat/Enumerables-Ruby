@@ -82,4 +82,16 @@ module Enumerable
     return arr.my_select { |item| item == num }.length if num
     arr.my_select { |item| yield(item)}.length
   end
+  def my_map
+    self.is_a?(Array) and newObj=[]
+    self.is_a?(Hash) and newObj={}
+    if block_given?
+        self.my_each do |item|
+            newObj.is_a?(Array) and newObj.push(yield(item))
+            newObj.is_a?(Hash) and newObj[item[0]]=yield(item[1])
+        end 
+    end
+    newObj.length==0 and return self.to_enum(:map)
+    newObj
+  end
 end
