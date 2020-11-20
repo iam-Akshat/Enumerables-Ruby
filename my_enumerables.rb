@@ -1,3 +1,4 @@
+# rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
     each do |item|
@@ -78,7 +79,7 @@ module Enumerable
     end
     my_any? { |item| return false if yield(item) }
     true
-end
+  end
 
   def my_count(num = nil)
     arr = self.class == Array ? self : to_a
@@ -88,24 +89,24 @@ end
     arr.my_select { |item| yield(item) }.length
   end
 
-  def my_map(my_proc=nil)
-    is_a?(Array) and newObj = []
-    is_a?(Hash) and newObj = {}
-    
+  def my_map(my_proc = nil)
+    is_a?(Array) and new_obj = []
+    is_a?(Hash) and new_obj = {}
+
     if block_given?
       my_each do |item|
-        newObj.is_a?(Array) and newObj.push(yield(item))
-        newObj.is_a?(Hash) and newObj[item[0]] = yield(item[1])
+        new_obj.is_a?(Array) and new_obj.push(yield(item))
+        new_obj.is_a?(Hash) and new_obj[item[0]] = yield(item[1])
       end
     elsif my_proc
-        my_each do |item|
-            newObj.is_a?(Array) and newObj.push(my_proc.call(item))
-            newObj.is_a?(Hash) and newObj[item[0]] = my_proc.call(item[1])
-          end
+      my_each do |item|
+        new_obj.is_a?(Array) and new_obj.push(my_proc.call(item))
+        new_obj.is_a?(Hash) and new_obj[item[0]] = my_proc.call(item[1])
+      end
     end
 
-    newObj.empty? and return to_enum(:map)
-    newObj
+    new_obj.empty? and return to_enum(:map)
+    new_obj
   end
 
   def my_inject(initial = self[0], sym = nil)
@@ -139,3 +140,4 @@ end
     initial
   end
 end
+# rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
