@@ -1,25 +1,37 @@
 # rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
 module Enumerable
   def my_each
-    each do |item|
-      yield(item)
+    if block_given?
+      each do |item|
+        yield(item)
+      end
+    else
+      return self.to_enum(:each)
     end
     self
   end
 
   def my_each_with_index
     index = 0
-    each do |item|
-      yield(item, index)
-      index += 1
+    if block_given?
+      each do |item|
+        yield(item, index)
+        index += 1
+      end
+    else
+      return self.to_enum(:each_with_index)
     end
     self
   end
 
   def my_select
-    new_array = []
-    my_each do |item|
-      new_array.push(item) if yield(item)
+    if block_given?
+      new_array = []
+      my_each do |item|
+        new_array.push(item) if yield(item)
+       end
+    else
+      return self.to_enum(:select)
     end
     new_array
   end
@@ -30,8 +42,14 @@ module Enumerable
         return false unless yield(item)
       end
     elsif pattern
-      my_each do |item|
-        return false unless item.is_a?(pattern)
+      if pattern.is_a?(Regexp)
+        my_each do |item|
+          return false unless pattern.match(item)
+        end
+      else
+        my_each do |item|
+          return false unless item.is_a?(pattern)
+        end
       end
     else
       my_each do |item|
@@ -47,8 +65,14 @@ module Enumerable
         return true if yield(item)
       end
     elsif pattern
-      my_each do |item|
-        return true if item.is_a?(pattern)
+      if pattern.is_a?(Regexp)
+        my_each do |item|
+          return true if pattern.match(item)
+        end
+      else
+        my_each do |item|
+          return true if item.is_a?(pattern)
+        end
       end
     else
       my_each do |item|
@@ -109,12 +133,24 @@ module Enumerable
     new_obj
   end
 
-  def my_inject(initial = self[0], sym = nil)
+  def my_inject(initial = nil, sym = nil)
+    if (!initial && !block_given?) 
+      puts "err1"
+      raise(LocalJumpError)
+    elsif(initial.class!=Symbol && !block_given? && !initial.is_a?(Numeric))
+      puts "err2"
+      raise(LocalJumpError)
+    end
     if block_given?
+      initial=self[0] unless initial
       my_each do |obj|
         initial = yield(initial, obj)
       end
-    elsif sym
+    elsif (sym==nil && initial.class==Symbol) || (sym && initial)
+      if !(sym && initial)
+        sym=initial
+        initial=self[0]
+      end
       case sym.to_s
       when '*'
         my_each do |obj|
@@ -141,3 +177,5 @@ module Enumerable
   end
 end
 # rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+arr=[12,34]
+puts arr.my_inject()
