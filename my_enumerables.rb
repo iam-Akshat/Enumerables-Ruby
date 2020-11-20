@@ -97,10 +97,13 @@ end
         newObj.is_a?(Array) and newObj.push(yield(item))
         newObj.is_a?(Hash) and newObj[item[0]] = yield(item[1])
       end
-    else
-      my_each { |item| newObj.push(my_proc.call(item))}
+    elsif my_proc
+        my_each do |item|
+            newObj.is_a?(Array) and newObj.push(my_proc.call(item))
+            newObj.is_a?(Hash) and newObj[item[0]] = my_proc.call(item[1])
+          end
     end
-    end
+
     newObj.empty? and return to_enum(:map)
     newObj
   end
