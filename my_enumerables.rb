@@ -88,14 +88,18 @@ end
     arr.my_select { |item| yield(item) }.length
   end
 
-  def my_map
+  def my_map(my_proc=nil)
     is_a?(Array) and newObj = []
     is_a?(Hash) and newObj = {}
+    
     if block_given?
       my_each do |item|
         newObj.is_a?(Array) and newObj.push(yield(item))
         newObj.is_a?(Hash) and newObj[item[0]] = yield(item[1])
       end
+    else
+      my_each { |item| newObj.push(my_proc.call(item))}
+    end
     end
     newObj.empty? and return to_enum(:map)
     newObj
@@ -131,8 +135,4 @@ end
     end
     initial
   end
-end
-
-def multiply_els(list)
-  list.my_inject(:*)
 end
