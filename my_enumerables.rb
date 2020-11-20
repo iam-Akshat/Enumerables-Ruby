@@ -125,7 +125,3 @@ module Enumerable
     initial
   end
 end
-
-def multiply_els(list)
-  list.my_inject(:*)
-end
