@@ -40,9 +40,12 @@ module Enumerable
         my_each do |item|
           return false unless pattern.match(item)
         end
-      else
+      elsif pattern.is_a?(Class)
         my_each do |item|
           return false unless item.is_a?(pattern)
+        end
+      else my_each do |item|
+        return true if item == pattern
         end
       end
     else
@@ -63,11 +66,15 @@ module Enumerable
         my_each do |item|
           return true if pattern.match(item)
         end
-      else
+      elsif pattern.is_a?(Class)
         my_each do |item|
           return true if item.is_a?(pattern)
         end
+      else my_each do |item|
+      return true if item == pattern
       end
+      end
+
     else
       my_each do |item|
         return true if item
@@ -170,4 +177,10 @@ module Enumerable
     initial
   end
 end
+
+def multiply_els(list)
+  list.my_inject(:*)
+end
 # rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+array = [1, 3, 4, 5, 6]
+puts array.my_inject {|memo, sum| memo + sum}
