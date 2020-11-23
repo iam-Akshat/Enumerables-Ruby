@@ -119,7 +119,7 @@ module Enumerable
     is_a?(Hash) and new_obj = {}
     is_a?(Range) and new_obj = []
 
-    if block_given? && !my_proc.nil?
+    if block_given? && my_proc.nil?
       my_each do |item|
         new_obj.is_a?(Array) and new_obj.push(yield(item))
         new_obj.is_a?(Hash) and new_obj[item[0]] = yield(item[1])
