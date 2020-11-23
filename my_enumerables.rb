@@ -119,7 +119,7 @@ module Enumerable
     is_a?(Hash) and new_obj = {}
     is_a?(Range) and new_obj = []
 
-    if block_given? && my_proc!=nil
+    if block_given? && !my_proc.nil?
       my_each do |item|
         new_obj.is_a?(Array) and new_obj.push(yield(item))
         new_obj.is_a?(Hash) and new_obj[item[0]] = yield(item[1])
@@ -136,10 +136,8 @@ module Enumerable
   end
 
   def my_inject(initial = nil, sym = nil)
-    mod_self=self
-    if(is_a?(Range))
-      mod_self=self.to_a
-    end
+    mod_self = self
+    mod_self = to_a if is_a?(Range)
     if !initial && !block_given?
       puts 'err1'
       raise(LocalJumpError)
@@ -159,37 +157,29 @@ module Enumerable
       end
       case sym.to_s
       when '*'
-        a=1
+        a = 1
         my_each do |obj|
-          if(a!=1) 
-          initial *= obj
-          end
-          a+=1
+          initial *= obj if a != 1
+          a += 1
         end
       when '+'
-        a=1
+        a = 1
         my_each do |obj|
-          if(a!=1) 
-          initial += obj
-          end
-          a+=1
+          initial += obj if a != 1
+          a += 1
         end
 
       when '-'
-        a=1
+        a = 1
         my_each do |obj|
-          if(a!=1) 
-          initial -= obj
-          end
-          a+=1
+          initial -= obj if a != 1
+          a += 1
         end
       when '/'
-        a=1
+        a = 1
         my_each do |obj|
-          if(a!=1) 
-          initial /= obj
-          end
-          a+=1
+          initial /= obj if a != 1
+          a += 1
         end
       else
         puts 'Invalid symbol'
