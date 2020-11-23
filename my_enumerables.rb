@@ -117,6 +117,7 @@ module Enumerable
   def my_map(my_proc = nil)
     is_a?(Array) and new_obj = []
     is_a?(Hash) and new_obj = {}
+    is_a?(Range) and new_obj= []
 
     if block_given?
       my_each do |item|
@@ -182,5 +183,3 @@ def multiply_els(list)
   list.my_inject(:*)
 end
 # rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
-array = [1, 3, 4, 5, 6]
-puts array.my_inject {|memo, sum| memo + sum}
