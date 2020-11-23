@@ -136,6 +136,10 @@ module Enumerable
   end
 
   def my_inject(initial = nil, sym = nil)
+    mod_self=self
+    if(is_a?(Range))
+      mod_self=self.to_a
+    end
     if !initial && !block_given?
       puts 'err1'
       raise(LocalJumpError)
@@ -144,14 +148,14 @@ module Enumerable
       raise(LocalJumpError)
     end
     if block_given?
-      initial ||= self[0]
+      initial ||= mod_self[0]
       my_each do |obj|
         initial = yield(initial, obj)
       end
     elsif (sym.nil? && initial.class == Symbol) || (sym && initial)
       unless sym && initial
         sym = initial
-        initial = self[0]
+        initial = mod_self[0]
       end
       case sym.to_s
       when '*'
