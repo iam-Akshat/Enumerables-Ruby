@@ -151,34 +151,35 @@ module Enumerable
         initial = yield(initial, obj)
       end
     elsif (sym.nil? && initial.class == Symbol) || (sym && initial)
+      a = if sym && initial
+            2
+          else
+            1
+          end
       unless sym && initial
         sym = initial
         initial = mod_self[0]
       end
       case sym.to_s
       when '*'
-        a = 1
         my_each do |obj|
-          initial *= obj if a != 1
+          initial *= obj if a > 1
           a += 1
         end
       when '+'
-        a = 1
         my_each do |obj|
-          initial += obj if a != 1
+          initial += obj if a > 1
           a += 1
         end
 
       when '-'
-        a = 1
         my_each do |obj|
-          initial -= obj if a != 1
+          initial -= obj if a > 1
           a += 1
         end
       when '/'
-        a = 1
         my_each do |obj|
-          initial /= obj if a != 1
+          initial /= obj if a > 1
           a += 1
         end
       else
