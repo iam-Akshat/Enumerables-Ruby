@@ -45,7 +45,7 @@ module Enumerable
           return false unless item.is_a?(pattern)
         end
       else my_each do |item|
-        return true if item == pattern
+        return false unless item == pattern
       end
       end
     else
@@ -119,7 +119,7 @@ module Enumerable
     is_a?(Hash) and new_obj = {}
     is_a?(Range) and new_obj = []
 
-    if block_given?
+    if block_given? && my_proc!=nil
       my_each do |item|
         new_obj.is_a?(Array) and new_obj.push(yield(item))
         new_obj.is_a?(Hash) and new_obj[item[0]] = yield(item[1])
@@ -155,21 +155,37 @@ module Enumerable
       end
       case sym.to_s
       when '*'
+        a=1
         my_each do |obj|
+          if(a!=1) 
           initial *= obj
+          end
+          a+=1
         end
       when '+'
+        a=1
         my_each do |obj|
+          if(a!=1) 
           initial += obj
+          end
+          a+=1
         end
 
       when '-'
+        a=1
         my_each do |obj|
+          if(a!=1) 
           initial -= obj
+          end
+          a+=1
         end
       when '/'
+        a=1
         my_each do |obj|
+          if(a!=1) 
           initial /= obj
+          end
+          a+=1
         end
       else
         puts 'Invalid symbol'
