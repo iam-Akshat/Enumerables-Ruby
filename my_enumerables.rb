@@ -46,7 +46,7 @@ module Enumerable
         end
       else my_each do |item|
         return true if item == pattern
-        end
+      end
       end
     else
       my_each do |item|
@@ -71,7 +71,7 @@ module Enumerable
           return true if item.is_a?(pattern)
         end
       else my_each do |item|
-      return true if item == pattern
+        return true if item == pattern
       end
       end
 
@@ -117,7 +117,7 @@ module Enumerable
   def my_map(my_proc = nil)
     is_a?(Array) and new_obj = []
     is_a?(Hash) and new_obj = {}
-    is_a?(Range) and new_obj= []
+    is_a?(Range) and new_obj = []
 
     if block_given?
       my_each do |item|
