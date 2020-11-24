@@ -1,4 +1,4 @@
-# rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/MethodLength
 module Enumerable
   def my_each
     return to_enum(:each) unless block_given?
@@ -146,9 +146,15 @@ module Enumerable
       raise(LocalJumpError)
     end
     if block_given?
+      a = if initial
+            2
+          else
+            1
+          end
       initial ||= mod_self[0]
       my_each do |obj|
-        initial = yield(initial, obj)
+        initial = yield(initial, obj) if a > 1
+        a += 1
       end
     elsif (sym.nil? && initial.class == Symbol) || (sym && initial)
       a = if sym && initial
@@ -193,4 +199,4 @@ end
 def multiply_els(list)
   list.my_inject(:*)
 end
-# rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/MethodLength
