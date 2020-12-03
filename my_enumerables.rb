@@ -1,4 +1,4 @@
-# rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/MethodLength
+# rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/MethodLength
 module Enumerable
   def my_each
     return to_enum(:each) unless block_given?
@@ -91,10 +91,10 @@ module Enumerable
     if !block_given? && !pattern.nil?
 
       if pattern.is_a? Class
-        my_each { |item| return false if item.class == pattern }
+        my_each { |item| return false if item.instance_of?(pattern) }
         return true
       end
-      if pattern.class == Regexp
+      if pattern.instance_of?(Regexp)
         my_each { |item| return false if pattern.match(item) }
         return true
       end
@@ -107,7 +107,7 @@ module Enumerable
   end
 
   def my_count(num = nil)
-    arr = self.class == Array ? self : to_a
+    arr = instance_of?(Array) ? self : to_a
     return arr.length unless block_given? || num
     return arr.my_select { |item| item == num }.length if num
 
@@ -156,7 +156,7 @@ module Enumerable
         initial = yield(initial, obj) if a > 1
         a += 1
       end
-    elsif (sym.nil? && initial.class == Symbol) || (sym && initial)
+    elsif (sym.nil? && initial.instance_of?(Symbol)) || (sym && initial)
       a = if sym && initial
             2
           else
@@ -199,4 +199,4 @@ end
 def multiply_els(list)
   list.my_inject(:*)
 end
-# rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/AbcSize,Metrics/MethodLength
+# rubocop:enable Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/MethodLength
