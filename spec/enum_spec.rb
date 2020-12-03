@@ -108,7 +108,20 @@ describe Enumerable do
     end
 
     it 'returns number of elements that yields true if a block is given' do
-      expect(all_num.my_count{ |x| x > 5}).to eql(5)
+      expect(all_num.my_count { |x| x > 5 }).to eql(5)
+    end
+  end
+
+  describe '#my_map' do
+    it 'returns an enum when no block is given' do
+      expect(all_num.my_map).to be_an(Enumerator)
+    end
+    it 'returns a new array with the results of running block once for every element in enum ' do
+      expect(all_num.my_map { |x| x * 2 }).to match_array(all_num.map { |x| x * 2 })
+    end
+    it 'returns a new array with proc running when both proc and block are given' do
+      proc = proc { |x| x * 3 }
+      expect(all_num.my_map(proc) { |x| x * 2 }).to match_array(all_num.map { |x| x * 3 })
     end
   end
 end
