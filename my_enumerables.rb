@@ -141,7 +141,7 @@ module Enumerable
     if !initial && !block_given?
       puts 'err1'
       raise(LocalJumpError)
-    elsif initial.class != Symbol && !block_given? && !initial.is_a?(Numeric)
+    elsif initial.class != Symbol && !block_given? && initial.is_a?(Numeric)
       puts 'err2'
       raise(LocalJumpError)
     end
