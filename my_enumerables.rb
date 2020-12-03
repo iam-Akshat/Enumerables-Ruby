@@ -1,11 +1,9 @@
 # rubocop:disable  Metrics/ModuleLength,Metrics/PerceivedComplexity,Metrics/CyclomaticComplexity,Metrics/MethodLength
 module Enumerable
-  def my_each
+  def my_each(&block)
     return to_enum(:each) unless block_given?
 
-    each do |item|
-      yield(item)
-    end
+    each(&block)
     self
   end
 
@@ -36,11 +34,12 @@ module Enumerable
         return false unless yield(item)
       end
     elsif pattern
-      if pattern.is_a?(Regexp)
+      case pattern
+      when Regexp
         my_each do |item|
           return false unless pattern.match(item)
         end
-      elsif pattern.is_a?(Class)
+      when Class
         my_each do |item|
           return false unless item.is_a?(pattern)
         end
@@ -62,11 +61,12 @@ module Enumerable
         return true if yield(item)
       end
     elsif pattern
-      if pattern.is_a?(Regexp)
+      case pattern
+      when Regexp
         my_each do |item|
           return true if pattern.match(item)
         end
-      elsif pattern.is_a?(Class)
+      when Class
         my_each do |item|
           return true if item.is_a?(pattern)
         end
@@ -106,12 +106,12 @@ module Enumerable
     true
   end
 
-  def my_count(num = nil)
+  def my_count(num = nil, &block)
     arr = instance_of?(Array) ? self : to_a
     return arr.length unless block_given? || num
     return arr.my_select { |item| item == num }.length if num
 
-    arr.my_select { |item| yield(item) }.length
+    arr.my_select(&block).length
   end
 
   def my_map(my_proc = nil)
