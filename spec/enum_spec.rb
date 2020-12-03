@@ -126,8 +126,8 @@ describe Enumerable do
   end
 
   describe '#my_inject' do
-    it 'raises error when no block or argument give' do
-      expect{all_num.my_inject}.to raise_error(LocalJumpError)
+    it 'raises error when no block or argument given' do
+      expect { all_num.my_inject }.to raise_error(LocalJumpError)
     end
 
     it 'returns result by applying the given symbol' do
@@ -136,6 +136,12 @@ describe Enumerable do
 
     it 'returns result by applying the given initial value and symbol' do
       expect(all_num.my_inject(5, :+)).to eql(60)
+    end
+  end
+
+  describe '#multiple_els' do
+    it 'returns the product of all elements in the array' do
+      expect(multiply_els([1, 2, 3, 4, 5])).to eql(120)
     end
   end
 end
