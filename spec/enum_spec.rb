@@ -129,5 +129,13 @@ describe Enumerable do
     it 'raises error when no block or argument give' do
       expect{all_num.my_inject}.to raise_error(LocalJumpError)
     end
+
+    it 'returns result by applying the given symbol' do
+      expect(all_num.my_inject(:+)).to eql(55)
+    end
+
+    it 'returns result by applying the given initial value and symbol' do
+      expect(all_num.my_inject(5, :+)).to eql(60)
+    end
   end
 end
