@@ -2,6 +2,7 @@ require_relative '../my_enumerables'
 
 describe Enumerable do
   let(:test1) { [1, 3, 5] }
+  let(:all_num) { [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
 
   describe '#my_each' do
     it 'returns enum when no block given' do
@@ -24,7 +25,6 @@ describe Enumerable do
   end
 
   describe '#my_select' do
-    let(:all_num) { [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }
     it 'returns an enum when no block is given' do
       expect(all_num.my_select).to be_an Enumerator
     end
@@ -95,6 +95,20 @@ describe Enumerable do
 
     it 'returns false when any of the element satisfies block conditions' do
       expect(string_array.my_none? { |word| word.length == 5 }).to eql(false)
+    end
+  end
+
+  describe '#my_count' do
+    it 'returns number of elements if no argument or block given' do
+      expect(all_num.my_count).to eql(10)
+    end
+
+    it 'returns number of elements that are equal to argument / no block given' do
+      expect(all_num.my_count(5)).to eql(1)
+    end
+
+    it 'returns number of elements that yields true if a block is given' do
+      expect(all_num.my_count{ |x| x > 5}).to eql(5)
     end
   end
 end
