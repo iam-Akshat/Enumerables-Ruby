@@ -124,4 +124,10 @@ describe Enumerable do
       expect(all_num.my_map(proc) { |x| x * 2 }).to match_array(all_num.map { |x| x * 3 })
     end
   end
+
+  describe '#my_inject' do
+    it 'raises error when no block or argument give' do
+      expect{all_num.my_inject}.to raise_error(LocalJumpError)
+    end
+  end
 end
