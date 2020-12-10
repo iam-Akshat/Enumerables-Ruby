@@ -20,7 +20,8 @@ GEM
     unicode-display_width (1.7.0)
 
 PLATFORMS
-  x64-mingw32
+  ruby
+
 
 DEPENDENCIES
   rubocop (~> 0.81.0)
